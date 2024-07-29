@@ -28,12 +28,25 @@
             text-transform: uppercase;
             letter-spacing: 2px;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            cursor: pointer;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            transition: transform 0.3s ease;
+        }
+        .title:hover {
+            transform: scale(1.15);
         }
         .subtitle {
             font-size: 12px;
             color: rgba(255, 255, 255, 0.7);
             margin-bottom: 25px;
             font-family: 'Montserrat', sans-serif;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
         }
         .social-icons {
             display: flex;
@@ -49,12 +62,19 @@
         .social-icons a:hover {
             transform: scale(1.2);
         }
+        @keyframes flashPurple {
+            0% { color: #8A2BE2; }
+            100% { color: white; }
+        }
+        .purple-flash {
+            animation: flashPurple 0.3s ease-out forwards;
+        }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"></script>
 </head>
 <body>
     <div class="container">
-        <h1 class="title">Zimennik Club</h1>
+        <h1 id="title" class="title">Zimennik Club</h1>
         <p class="subtitle">(скоро)</p>
         <div class="social-icons">
             <a href="https://twitch.tv/zimennik" target="_blank"><i class="fab fa-twitch"></i></a>
@@ -62,5 +82,19 @@
             <a href="https://youtube.com/zimennikclub" target="_blank"><i class="fab fa-youtube"></i></a>
         </div>
     </div>
+
+    <script>
+        const title = document.getElementById('title');
+        title.addEventListener('click', function() {
+            this.style.color = '#8A2BE2';
+            setTimeout(() => {
+                this.style.color = '';
+                this.classList.add('purple-flash');
+                setTimeout(() => {
+                    this.classList.remove('purple-flash');
+                }, 300);
+            }, 0);
+        });
+    </script>
 </body>
 </html>
