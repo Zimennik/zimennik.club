@@ -11,6 +11,8 @@
     "deploy": "npm run build && gh-pages -d out"
   },
   "dependencies": {
+    "@discordjs/rest": "^2.4.2",
+    "discord-api-types": "^0.37.117",
     "discord.js": "^14.17.3",
     "next": "15.1.6",
     "next-auth": "^4.24.11",

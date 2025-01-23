@@ -1,36 +1,25 @@
-import { NextResponse } from "next/server";
+import { NextResponse } from 'next/server';
+import { REST } from '@discordjs/rest';
+import { Routes } from 'discord-api-types/v10';
+
+const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_BOT_TOKEN!);
 
 export async function GET() {
   try {
-    const channelId = process.env.DISCORD_CHANNEL_ID;
-    const botToken = process.env.DISCORD_BOT_TOKEN;
-
-    if (!channelId || !botToken) {
-      return NextResponse.json(
-        { error: "Missing Discord configuration" },
-        { status: 500 }
-      );
-    }
-
-    const response = await fetch(
-      `https://discord.com/api/v10/channels/${channelId}/messages`,
+    const messages = await rest.get(
+      Routes.channelMessages(process.env.DISCORD_CHANNEL_ID!),
       {
-        headers: {
-          Authorization: `Bot ${botToken}`,
-        },
+        query: new URLSearchParams({
+          limit: '10'
+        })
       }
     );
 
-    if (!response.ok) {
-      throw new Error("Failed to fetch messages");
-    }
-
-    const messages = await response.json();
     return NextResponse.json(messages);
   } catch (error) {
-    console.error("Error fetching messages:", error);
+    console.error('Failed to fetch messages:', error);
     return NextResponse.json(
-      { error: "Failed to fetch messages" },
+      { error: 'Failed to fetch messages' },
       { status: 500 }
     );
   }
