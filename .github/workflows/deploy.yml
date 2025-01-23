@@ -22,8 +22,14 @@ jobs:
     - name: Build project
       run: npm run build
 
+    - name: Install PM2
+      run: sudo npm install -g pm2
+
+    - name: Start server
+      run: pm2 start npm --name "zimennik.club" -- start
+
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./out
+        publish_dir: ./.next
