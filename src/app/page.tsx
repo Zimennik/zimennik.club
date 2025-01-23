@@ -14,11 +14,14 @@ interface Message {
 }
 
 export default function Home() {
-  const { data: session } = useSession()
+  const { data: session, status } = useSession()
   const [messages, setMessages] = useState<Message[]>([])
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    if (status === 'loading') return
     if (session) {
+      setLoading(false)
       fetch('/api/messages')
         .then(res => res.json())
         .then(data => setMessages(data))
