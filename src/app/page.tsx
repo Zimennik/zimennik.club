@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import Image from 'next/image'
 import { useSession, signIn, signOut } from 'next-auth/react'
 
 interface Message {
@@ -16,12 +17,10 @@ interface Message {
 export default function Home() {
   const { data: session, status } = useSession()
   const [messages, setMessages] = useState<Message[]>([])
-  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     if (status === 'loading') return
     if (session) {
-      setLoading(false)
       fetch('/api/messages')
         .then(res => res.json())
         .then(data => setMessages(data))
@@ -60,10 +59,12 @@ export default function Home() {
           {messages.map(message => (
             <div key={message.id} className="bg-white/10 p-4 rounded-lg">
               <div className="flex items-center gap-2 mb-2">
-                <img 
-                  src={message.author.avatar} 
+                <Image
+                  src={message.author.avatar}
                   alt={message.author.username}
-                  className="w-8 h-8 rounded-full"
+                  width={32}
+                  height={32}
+                  className="rounded-full"
                 />
                 <span className="font-medium">{message.author.username}</span>
                 <span className="text-sm text-gray-400">
